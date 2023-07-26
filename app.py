@@ -34,7 +34,7 @@ def login():
 		if not id or not pw:  # 아이디 또는 비밀번호가 비어 있는 경우
 			return "<script>alert(\'ID나 PW가 입력되지 않았습니다. \');window.history.back();</script>"
 		conn = pymysql.connect(
-			host='192.168.5.131', user='root', password='ubuntu',
+			host='databaseson.cftiyrgdgg3r.ap-northeast-1.rds.amazonaws.com', user='admin', password='qwer1234',
 			db='nono', charset='utf8'
 		) # 데이터베이스 접속
 		cursor = conn.cursor() # 커서 객체 생성
@@ -72,7 +72,7 @@ def addmember():
 		if not id or not pw:  # 아이디 또는 비밀번호가 비어 있는 경우
 			return {'msg': 'ID와 PW를 확인하세요', 'code': 2}
 		conn = pymysql.connect(
-			host='192.168.5.131', user='root', password='ubuntu',
+			host='databaseson.cftiyrgdgg3r.ap-northeast-1.rds.amazonaws.com', user='admin', password='qwer1234',
 			db='nono', charset='utf8'
 		) # 데이터베이스 접속
 		cursor = conn.cursor() # 커서 객체 생성
@@ -122,7 +122,7 @@ def nonogrampage():
 @app.route('/nonorank')
 def rank():
     conn = pymysql.connect(
-     			host='192.168.5.131', user='root', password='ubuntu',
+     			host='databaseson.cftiyrgdgg3r.ap-northeast-1.rds.amazonaws.com', user='admin', password='qwer1234',
 				db='nono', charset='utf8'
     )
     cursor = conn.cursor()
@@ -147,7 +147,7 @@ def score():
 	score = data['score']
 	time = data['time']
 	conn = pymysql.connect(
-     			host='192.168.5.131', user='root', password='ubuntu',
+     			host='databaseson.cftiyrgdgg3r.ap-northeast-1.rds.amazonaws.com', user='admin', password='qwer1234',
 				db='nono', charset='utf8'
     )
 	cursor = conn.cursor()
@@ -180,7 +180,7 @@ def rcpscore():
    print(uid)
    # ID = data['ID']
    conn = pymysql.connect(
-			host='192.168.5.131', user='root', password='ubuntu',
+			host='databaseson.cftiyrgdgg3r.ap-northeast-1.rds.amazonaws.com', user='admin', password='qwer1234',
 			db='nono', charset='utf8'
 		)
    cursor = conn.cursor() 
@@ -198,7 +198,7 @@ def rcpscore():
 @app.route('/rcprank')
 def rcprank():
     conn = pymysql.connect(
-     			host='192.168.5.131', user='root', password='ubuntu',
+     			host='databaseson.cftiyrgdgg3r.ap-northeast-1.rds.amazonaws.com', user='admin', password='qwer1234',
 				db='nono', charset='utf8'
     )
     cursor = conn.cursor()
@@ -226,7 +226,7 @@ def post():
 
 @app.route('/nonorank', methods=['GET', 'POST'])
 def index():
-    conn = pymysql.connect(host='192.168.5.131', user='root', password='ubuntu', db='nono', charset='utf8')
+    conn = pymysql.connect(host='databaseson.cftiyrgdgg3r.ap-northeast-1.rds.amazonaws.com', user='admin', password='qwer1234', db='nono', charset='utf8')
 
     if request.method == 'POST':
         search_id = request.form['search']
@@ -263,5 +263,5 @@ def review():
 
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', debug=True) # flask 실행
+	app.run(host='0.0.0.0', debug=True, port=80) # flask 실행
 
