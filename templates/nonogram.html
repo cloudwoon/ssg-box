@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="shortcut icon" href="#">
+
+</head>
+<body>
+    <title>네모네모 로직[nonograms]</title>
+
+    <style>
+        body {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            background: #2b2b2b;
+            font-family: "Poppins", sans-serif;
+            height: 100vh;
+        }
+        
+        .difficulty-container {
+            text-align: center;
+        }
+
+        .difficulty-button {
+            margin-bottom: 10px;
+        }
+
+        .difficulty-button :hover {
+            background-color: #8d8d8d;
+            border-color: #8d8d8d;
+        }
+
+        .game-container {
+            display: none;
+            text-align: left;
+        }
+        .view_ranking {
+            display: none;
+            text-align: left;
+        }
+        table {
+            border-collapse: collapse;
+            margin: auto;
+            color : black;
+        }
+
+        td {
+            border: 1px solid #000;
+            width: 20px;
+            height: 20px;
+            background-color: #fff;
+        }
+        th:first-child,
+        td:first-child {
+            width: auto; /* 첫 번째 열의 너비를 자동으로 설정 */
+        }
+        .filled {
+            background-color: #000;
+        }
+
+        .selected {
+            background-color: rgb(0, 0, 0);
+        }
+
+        .hint {
+            font-size: 10px;
+            text-align: center;
+            line-height: 15px;
+        }
+
+        .hint-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 5px;
+        }
+        .selected {
+            background-color: red;
+        }
+        .hint-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 5px;
+        }
+        #backbutton
+        {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #score
+        {
+            position: absolute;
+            top: 10px;
+            left: 30px;
+        }
+        #timer
+        {
+            position: absolute;
+            top: 10px;
+            left: 200px;
+        }
+        #check_ok
+        {
+            position: absolute;
+            top: 7px;
+            right: 70px;
+        }
+        #result-text
+        {
+            position: absolute;
+            top: 30px;
+            right: 60px;
+        }
+        #error
+        {          
+            position: absolute;
+            top: 60px;
+            right: 60px;
+        }
+        #ranking
+        {
+            position: absolute;
+            top: 7px;
+            right: 10px;
+        }
+        #ranktitle
+        {
+            position: absolute;
+            top: 10px;
+            right: 540px;
+        }
+        #back-home
+        {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #uname
+        {
+            position: absolute;
+            top: 10px;
+            right: 230px;
+        }
+        #mainBT
+        {
+            position: absolute;
+            top: 10px;
+            right: 60px;
+        }
+
+        #bgm
+        {   
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          width: 90px;
+          height: 20px;
+          font-size:90%;
+          display: flex;
+          justify-content: center; /* 가로 가운데 정렬 */
+          align-items: center; /* 세로 가운데 정렬 */
+        }
+        #LOGOUT
+        {
+            position: absolute;
+            top: 7px;
+            right: 160px;
+        }
+        .login_music{
+            display: none;
+        }
+            .difficulty-button.first{
+                padding: 10px 40px; font-size: 24px; border-radius: 10px; margin-bottom: 20px; background-color: #9ac5d4; color: #151515; border: none;  cursor: pointer; margin-top: 10px; text-align: center; box-shadow: 0 2px 55px -25px rgb(0 0 0 / 100%);
+            }
+            .difficulty-button.second{
+                padding: 10px 40px; font-size: 24px; border-radius: 10px; margin-bottom: 20px; background-color: #658a97; color: #ececec; border: none;  cursor: pointer; margin-top: 10px; text-align: center; box-shadow: 0 2px 55px -25px rgb(0 0 0 / 100%);
+            }
+            .difficulty-button.third{
+                padding: 10px 40px; font-size: 24px; border-radius: 10px; margin-bottom: 20px; background-color: #384b52; color: #fff; border: none;  cursor: pointer; margin-top: 10px; text-align: center; box-shadow: 0 2px 55px -25px rgb(0 0 0 / 100%);
+            }
+
+        .difficulty-button.first:hover {background-color: #61808c;}
+        .difficulty-button.second:hover {background-color: #34474e;}
+        .difficulty-button.third:hover {background-color: #1d272b;}
+    </style>
+
+    <button type="button" class="btn "onclick="music_play()" id = "bgm">BGM ON</button>
+    <button type="button" id="LOGOUT" class="difficulty-button" onclick="location.href='/login'"
+          style=" background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 5px; text-align: center;">로그아웃
+        </button>
+    <div class="difficulty-container">
+
+        <h1> {{uname}}</h1>
+     
+        <h2 style="text-align: center; font-size: 50px; color: #fff;">
+            nonograms Game <span class="icon">&#127918;</span><br>
+            <style>
+            body{
+                place-items: center;
+                font-family: "Poppins", sans-serif;
+                color: #d3d3d3;
+                font-weight: 800;
+                font-size:medium;
+            }
+            .icon{
+                position: absolute;
+                animation: motion 0.3s /* 속도 */
+                            linear 0s   /* 처음부터 끝까지 일정 속도로 진행 */
+                            infinite alternate; /* 무한 반복 */
+            }
+            @keyframes motion {
+                0% {margin-top: 0px;} /* 처음 위치 */
+                100% {margin-top: 10px;} /* 마지막 위치 */
+            }
+
+            </style>
+            
+        </h2><br>
+        <p1 id = uname> PLAYER : {{user_id}}</p1>
+        <p1> 노노 그램으로도 불리는 네모네모 로직은 행과 열의 힌트를 이용해 비트맵 이미지를 완성하는 게임이에요. </p1><br><br>
+        <p2> 왼쪽 마우스 클릭은 정답을 표시하고, 오른쪽 마우스는 정답이 아닌 부분을 표시해줘요~!<br><br><br> 📌오른쪽 마우스는 정답에 영향을 끼치지 않아요📌</p2><br><br><br><br>
+        <button class="difficulty-button first" onclick="selectDifficulty('easy')">&nbsp;&nbsp;easy&nbsp;&nbsp;</button>
+        <button class="difficulty-button second" onclick="selectDifficulty('normal')">normal</button>
+        <button class="difficulty-button third" onclick="selectDifficulty('difficult')">difficult</button>
+        <button type="button" id="ranking" class="difficulty-button" onclick="location.href='/nonorank'"
+          style=" background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 5px; text-align: center;">🏆랭킹
+        </button><br><br>
+        <class="difficulty-button a" onclick="location.href='/mainpage'"
+            style="color: #007bff; text-decoration: none; font-size: 20px; cursor: pointer; text-align: center; font-weight: bold;">HOME
+        
+    </div>
+
+    <!-- audio class -->
+
+      <audio class="login_music" controls>
+        <source src="/static/login_music.mp3" type="audio/mpeg">
+      </audio>  
+      
+    <!-- audio class -->
+    <div class="game-container">
+        <p1 id = uname> PLAYER : {{user_id}}</p1>
+        <h2 align="left" id="score">점수: 0</h2> 
+        <button id="backbutton" class="back-button" onclick="backToDifficulty()" style="background-color: #2b2b2b; color: #007bff; border: none; font-weight: bold;cursor: pointer; margin-top: 5px; text-align: center">Back</button>
+        <h1>😃네모네모로직 <span id="difficulty"></span> 난이도😃 </h1>
+        <h2 id="timer">경과시간: 0초</h2>
+        <table id="game-table">
+            <!-- Your game table will be generated dynamically here -->
+        </table>
+        <br>
+        <button id="check_ok" onclick="checkAnswer()" style="background-color: #ff4b3b; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 5px; text-align: center">정답 확인</button>
+        <h3 id="result-text"></h3>
+        <h4 id="error" ></h4>
+        <br>
+        <br>
+        
+    </div>
+
+    <script>
+        // var userid = user_id;
+        // document.getElementById("uname").textContent = userid;
+        var nonogramData = [];
+        var score = 0;
+        var startTime;
+        var currentTime;
+        var elapsedTime;
+        // Prevent default context menu
+        document.querySelector('.game-container').addEventListener("contextmenu", function(event) {
+          event.preventDefault();
+        });
+
+        function selectDifficulty(difficulty) {
+            // Generate the game table dynamically
+            
+
+            startTime = new Date().getTime(); // 시작 시간 가져오기
+            setInterval(function() {
+                currentTime = new Date().getTime(); // 현재 시간 가져오기
+                elapsedTime = (currentTime - startTime) / 1000; // 경과 시간 계산 (밀리초를 초로 변환)
+                elapsedTime = Math.floor(elapsedTime);
+                document.getElementById("timer").innerHTML = "경과시간: " + elapsedTime + "초"; // 시간 표시
+            }, 1000); // 1초마다 업데이트
+            // Define nonogram data based on selected difficulty
+            if (difficulty === 'easy') {
+                nonogramData = [
+                    [1, 0, 1, 0, 1],
+                    [1, 1, 1, 1, 1],
+                    [1, 0, 0, 0, 1],
+                    [1, 1, 1, 1, 1]
+                ];
+                score = 100;
+                updateScore();
+            } else if (difficulty === 'normal') {
+                nonogramData = [
+                    [1, 0, 1, 1, 1, 1],
+                    [1, 1, 1, 0, 1, 1],
+                    [1, 0, 0, 0, 0, 1],
+                    [1, 1, 1, 1, 1, 1],
+                    [1, 0, 1, 1, 0, 1],
+                    [1, 1, 1, 1, 1, 1]
+                    
+                ];
+                score = 200;
+                updateScore();
+            } else if (difficulty === 'difficult') {
+                nonogramData = [
+                    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+                    [0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,1,1,0,0],
+                    [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0],
+                    [0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,1,1,1,0],
+                    [0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,0,0],
+                    [0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
+                    [0,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
+                    [0,1,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,1,0],
+                    [0,1,1,0,0,1,1,0,0,1,1,1,0,0,0,1,1,0,0,0,1,0],
+                    [0,1,1,0,0,1,1,1,0,1,1,0,0,0,0,1,1,1,0,0,1,0],
+                    [0,1,1,0,0,1,1,1,0,0,0,0,0,0,0,0,1,1,0,0,1,0],
+                    [0,1,1,0,0,1,1,1,1,0,0,0,1,1,1,0,0,0,0,1,1,0],
+                    [0,1,1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,1,1,1,1,0],
+                    [0,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,0],
+                    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
+                    [0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0],
+                    [0,0,0,1,1,1,0,1,1,1,1,1,0,0,1,1,1,1,0,0,0,0],
+                    [0,0,0,0,1,1,0,1,1,1,1,1,0,0,1,1,1,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,1,1,1,1,1,0,1,1,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                ];
+                score = 500;
+                updateScore();
+                
+
+            }
+            
+            var gameTable = document.getElementById("game-table");
+            gameTable.innerHTML = '';
+            // Hide difficulty selection container
+            var difficultyContainer = document.querySelector('.difficulty-container');
+            difficultyContainer.style.display = 'none';
+
+            // Show game container
+            var gameContainer = document.querySelector('.game-container');
+            gameContainer.style.display = 'block';
+
+            // Set difficulty text
+            var difficultyText = document.getElementById('difficulty');
+            difficultyText.textContent = difficulty;
+
+
+            // Generate the row hints dynamically
+            for (var i = 0; i < nonogramData.length; i++) {
+                var row = nonogramData[i];
+                var hint = getHint(row);
+                var rowElement = document.createElement("tr");
+                var hintElement = document.createElement("td");
+                hintElement.className = "hint";
+                hintElement.textContent = hint.join(" ");
+                hintElement.setAttribute('pos', (i + 1));
+                hintElement.addEventListener('click', (e) => {
+                        const pos = e.target.getAttribute('pos');
+                        let x = pos.substring(0);   
+                        hint_row(x);
+                    });
+                rowElement.appendChild(hintElement);
+                for (var j = 0; j < row.length; j++) {
+                    var cell = document.createElement("td");
+                    cell.addEventListener("mousedown", cellClickHandler);
+                    rowElement.appendChild(cell);
+                }
+                gameTable.appendChild(rowElement);
+            }
+
+            // Generate the column hints dynamically
+            var colHints = getColHints(nonogramData);
+            var colHintRow = document.createElement("tr");
+            var colHintCell = document.createElement("td");
+            colHintCell.className = "hint";
+            colHintRow.appendChild(colHintCell);
+            for (var j = 0; j < nonogramData[0].length; j++) {
+                var hint = colHints[j];
+                var hintElement = document.createElement("td");
+                hintElement.className = "hint";
+                hint.forEach(hintLine => {
+                    var hintLineElement = document.createElement("div");
+                    hintLineElement.textContent = hintLine;
+                    hintLineElement.setAttribute('pos', (j + 1));
+                    hintLineElement.addEventListener('click', (e) => {
+                        const pos = e.target.getAttribute('pos');
+                        let y = pos.substring(0);
+                        hint_col(y);
+                        //alert(y);
+                    });
+                    hintElement.appendChild(hintLineElement);
+                });
+                colHintRow.appendChild(hintElement);
+            }
+            gameTable.insertBefore(colHintRow, gameTable.firstChild);
+        }
+        function hint_col(y)
+        {
+            var gameTable = document.getElementById("game-table");
+            var idx = parseInt(y)-1;
+            for(var j = 0; j <nonogramData.length;j++)
+            {
+                var ans = nonogramData[j];
+                // var cell = gameTable.rows[i].cells[j];
+                var cell = gameTable.querySelector(`tr:nth-child(${j+2}) td:nth-child(${idx+2})`);
+                console.dir(cell)
+                if(ans[idx]==1)
+                {
+                    if(!cell.classList.contains("filled"))
+                    {
+                        cell.classList.toggle("filled");
+                        score -=1;
+                    }
+                }
+                else if(ans[idx]==0)
+                {
+                    if(cell.classList.contains("filled"))
+                    {
+                        cell.classList.toggle("filled");
+                        score -=1;
+                    }
+                }
+            }
+            updateScore();
+        }
+        function hint_row(x)
+        {
+            var gameTable = document.getElementById("game-table");
+            var idx = parseInt(x);
+            var ans = nonogramData[idx-1];
+            for(var j = 0; j <ans.length;j++)
+            {
+                
+                // var cell = gameTable.rows[i].cells[j];
+                var cell = gameTable.querySelector(`tr:nth-child(${idx+1}) td:nth-child(${j+2})`);
+                console.dir(cell)
+                if(ans[j]==1)
+                {
+                    if(!cell.classList.contains("filled"))
+                    {
+                        cell.classList.toggle("filled");
+                        score -= 1;
+                    }
+                }
+                else if(ans[j]==0)
+                {
+                    if(cell.classList.contains("filled"))
+                    {
+                        cell.classList.toggle("filled");
+                        score -= 1;
+                    }
+                }
+            }
+            updateScore();
+        }
+        function toggleDiv() {
+            var difficultyContainer = document.querySelector('.difficulty-container');
+            difficultyContainer.style.display = 'None';
+
+            var viewrankingct = document.querySelector('.view_ranking');
+            viewrankingct.style.display = 'block';
+            
+        }
+        function updateScore() {
+            var scoreElement = document.getElementById('score');
+            scoreElement.textContent = '점수: ' + score;
+        }
+
+        // Handle cell click event
+        function cellClickHandler(event) {
+          var cell = event.target;
+          if (event.button == 2 || event.which == 3 ) { // 오른쪽 마우스 버튼 클릭 시
+            if(!cell.classList.contains("filled")){
+            cell.classList.toggle("selected");}
+            
+          } else { // 왼쪽 마우스 버튼 클릭 시
+            if(!cell.classList.contains("selected")){
+            cell.classList.toggle("filled");}
+            if(!cell.classList.contains("filled")){
+            score -=1;
+            updateScore();
+            }
+
+          }
+        }
+
+
+
+        // Check if the current answer is correct
+        function checkAnswer() {
+            var cells = document.querySelectorAll("#game-table td:not(.hint)");
+            var answer = [];
+            cells.forEach(cell => {
+                if (cell.classList.contains("filled")) {
+                    answer.push(1);
+                } else {
+                    answer.push(0);
+                }
+            });
+            if (JSON.stringify(answer) === JSON.stringify(flatten(nonogramData))) {
+                document.getElementById("result-text").textContent = "[정답입니다!]";
+                fetch('/score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ score : score, time : elapsedTime })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result.result)
+                //console.log('데이터가 성공적으로 전송되었습니다.');
+                //document.getElementById("error").textContent = "[점수저장완료.]";
+                })
+                .catch(error => {
+                //console.error('데이터 전송 중 오류가 발생하였습니다.', error);
+                //document.getElementById("error").textContent = "[점수저장실패.]";
+                });
+                // score
+                // elapsedTime
+            } else {
+                document.getElementById("result-text").textContent = "[오답입니다.]";
+            }
+        }
+        
+        // Go back to difficulty selection
+        function backToDifficulty() {
+            // Show difficulty selection container
+            var difficultyContainer = document.querySelector('.difficulty-container');
+            difficultyContainer.style.display = 'block';
+            document.getElementById("result-text").textContent = "";
+            // Hide game container
+            var gameContainer = document.querySelector('.game-container');
+            gameContainer.style.display = 'none';
+            score = 0 ;
+            
+            updateScore();
+        }
+
+        // Flatten a 2D array into a 1D array
+        function flatten(arr) {
+            return [].concat(...arr);
+        }
+
+        // Generate hints for a given row
+        function getHint(row) {
+            var hint = [];
+            var count = 0;
+            for (var i = 0; i < row.length; i++) {
+                if (row[i] === 1) {
+                    count++;
+                } else if (count > 0) {
+                    hint.push(count);
+                    count = 0;
+                }
+            }
+            if (count > 0) {
+                hint.push(count);
+            }
+            return hint;
+        }
+        
+
+        // 음악 재생
+
+        function music_play(){
+            const audio = document.querySelector('.login_music');
+            var button = document.getElementById("bgm");
+            if (button.textContent === "BGM ON") {
+              button.textContent = "BGM OFF";
+              audio.play();
+            } else {
+              button.textContent = "BGM ON";
+              audio.pause();
+            }
+        }
+        // Generate hints for each column
+        function getColHints(data) {
+            var colHints = [];
+            var numRows = data.length;
+            var numCols = data[0].length;
+            for (var j = 0; j < numCols; j++) {
+                var col = [];
+                var count = 0;
+                for (var i = 0; i < numRows; i++) {
+                    if (data[i][j] === 1) {
+                        count++;
+                    } else if (count > 0) {
+                        col.push(count);
+                        count = 0;
+                    }
+                }
+                if (count > 0) {
+                    col.push(count);
+                }
+                colHints.push(col);
+            }
+            return colHints;
+        }
+        
+    </script>
+</body>
+</html>

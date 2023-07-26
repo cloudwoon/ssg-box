@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <div class="image-link-container">
+    <a href="/nonorank" class="image-link">
+        <img src="/static/rank1.webp" alt="CUP" width="128" height="128" class="centered-image">
+    </a>
+</div>
+    <head>
+
+        <title>노노그램 점수표</title>
+        <style>
+            .image-link-container {
+                text-align: center;
+            }
+            a.image-link {
+                display: inline-block;
+                width: 128px;
+                height: 128px;
+            }
+            th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+              padding: 10px; /* 적절한 값을 선택하여 셀의 크기를 조절합니다. */
+          }
+           
+            thead tr:nth-child(1) {
+                    background-color: #879fff74;
+            }
+            tbody tr:nth-child(1) {
+                    background-color: #ffdc73;
+            }
+            tbody tr:nth-child(1) td:nth-child(2) span:after {
+                content: '🏆';
+            }
+            tbody tr:nth-child(2) td:nth-child(2) span:after {
+                content: '🥈';
+            }
+            tbody tr:nth-child(3) td:nth-child(2) span:after {
+                content: '🥉';
+            }
+            tbody tr:nth-child(2) {
+                    background-color: #b4b3b3;
+            }
+            tbody tr:nth-child(3) {
+                    background-color: #cd7f32;
+            }
+            tbody tr:nth-child(2n+5) {
+                    background-color: #21202023;;
+            }
+            .centered-image {
+                    display: block;
+                    margin: 0 auto;
+            }
+            .btn-container {
+                    display: flex;
+                    justify-content: center;
+            }
+
+            .btn {
+                    width: 150px;
+                    height: 80px;
+                    background-color: rgb(67, 49, 49);
+                    color: #fff;
+                    font-family: 맑은 고딕, sans-serif;
+                    font-weight: bold;
+                    border: 0;
+                    outline: none;
+                    font-size: 30px;
+                    margin: 30px;
+                    background: black;
+                    padding: 10px;
+                    cursor: pointer;
+                    border-radius: 10px;
+            }
+            /* 추가적인 스타일 속성들을 필요에 따라 설정할 수 있습니다. */
+            tr:hover {background-color: #D6EEEE;}
+        </style>
+    </head>
+    <body>
+        <form method="POST" style="text-align:center">
+            <input type="text" name="search" placeholder="ID 검색">
+            <input type="submit" value="검색">
+        </form>
+        <h1 style="text-align:center">노노그램 순위</h1>
+        <table width="800" style="margin-left:auto;margin-right:auto;">
+            <thead>
+                <tr>
+                    <th>아이디</th>
+                    <th>점수</th>
+                    <th>경과 시간</th>
+                    <th>순위</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                    <tr>
+                        <td style="text-align:center"><span></span>{{ row[0] }}</td>
+                        <td style="text-align:center"><span></span>{{ row[1] }}점</td>
+                        <td style="text-align:center"><span></span>{{ row[2] }}초</td>
+                        <td style="text-align:center"><span></span>{{ row[3] }}등</td>
+                    </tr>
+                    
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="btn-container">
+            <button class="btn" onclick="window.location.href = '/nonogram';">돌아가기</button>
+        </div>
+    </body>
+</html>

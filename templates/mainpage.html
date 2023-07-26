@@ -1,0 +1,376 @@
+<form action = "/mainpage" method = "POST">
+  <p1 id = uname> PLAYER : {{user_id}}</p1>
+</form>
+<style>
+ #uname
+        {
+            position: absolute;
+            top: 10px;
+            right: 180px;
+            color: yellow;
+        }
+
+</style>
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Game Z1p</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    
+    
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+                * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        }
+        body {
+        width: 100%;
+        height: 100vh;
+        background: #2b2b2b;
+        display: grid;
+        place-items: center;
+        font-family: "Poppins", sans-serif;
+        font-weight: 800;
+        }
+        .loader {
+        perspective: 800px;
+        -webkit-perspective: 800px;
+        font-size: 5rem;
+        }
+        .loader > span {
+        display: inline-block;
+        color: #fff;
+        transform-style: preserve-3d;
+        transform-origin: 0 100%;
+        animation: anim 5s infinite linear;
+        }
+        .loader > span:nth-child(even) {
+        color: #64c9ff;
+        }
+        .loader > span:nth-child(2) {
+        animation-delay: 0.2s;
+        }
+        .loader > span:nth-child(3) {
+        animation-delay: 0.4s;
+        }
+        .loader > span:nth-child(4) {
+        animation-delay: 0.6s;
+        }
+        .loader > span:nth-child(5) {
+        animation-delay: 0.8s;
+        }
+        .loader > span:nth-child(6) {
+        animation-delay: 1s;
+        }
+        .loader > span:nth-child(7) {
+        animation-delay: 1.2s;
+        }
+        .loader > span:nth-child(8) {
+        animation-delay: 1.4s;
+        }
+       
+        @keyframes anim {
+        35% {
+            transform: rotateX(360deg);
+        }
+        100% {
+            transform: rotateX(360deg);
+        }
+        }
+        body {
+            background-color: #2b2b2b;
+            color: #333;
+            font-family: Arial, sans-serif;
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        /* 
+        h2 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 50px;
+        } */
+
+        .btn {
+            padding: 10px 40px;
+            font-size: 24px;
+            border-radius: 10px;
+            margin-bottom: 20px;x`
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0069d9;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            border-color: #218838;
+        }
+
+        .btn-logout {
+            background-color: #ff2f00;
+            border-color: #ff2f00;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 20px;
+        }
+
+        a:hover {
+            color: #2c83e1;
+        }
+       
+        .popup {
+            z-index: 1;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            min-width: 300px;
+            max-width: 600px;
+            background-color: #b4c7f4;
+            border-radius: 15px;
+            box-shadow: 0 2px 55px -25px rgb(0 0 0 / 100%);
+        }
+        .popup > .title{
+            border-radius: 15px 15px 0 0;
+            min-height: 40px;
+            color: #fff;
+            background-color: #0056b3;
+            padding: 10px 15px;
+            box-sizing: border-box;
+            font-weight: bold;
+        }
+        .popup > .content {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .popup > .cmd {
+            bottom: 0;
+            min-height: 40px;
+            padding: 15px 15px;
+            box-sizing: border-box;
+            border-radius: 0 0 15px 15px;
+            min-height: 40px;
+            text-align: right;
+        }
+        .popup > .cmd .button {
+            border-radius: 8px;
+            padding: 5px 10px;
+            border: 1px solid #aaa;
+        }
+        .popup > .cmd .button:hover {
+            color: #fff;
+            background-color: #000;
+            border-color: #000;
+        }
+        .hide { display: none; }
+
+
+
+
+        .popup2 {
+            z-index: 1;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            min-width: 300px;
+            max-width: 600px;
+            background-color: #94ff99;
+            border-radius: 15px;
+            box-shadow: 0 2px 55px -25px rgb(0 0 0 / 100%);
+        }
+        .popup2 > .title{
+            border-radius: 15px 15px 0 0;
+            min-height: 40px;
+            color: #fff;
+            background-color: #218838;
+            padding: 10px 15px;
+            box-sizing: border-box;
+            font-weight: bold;
+        }
+        .popup2 > .content {
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .popup2 > .cmd {
+            bottom: 0;
+            min-height: 40px;
+            padding: 15px 15px;
+            box-sizing: border-box;
+            border-radius: 0 0 15px 15px;
+            min-height: 40px;
+            text-align: right;
+        }
+        .popup2 > .cmd .button {
+            border-radius: 8px;
+            padding: 5px 10px;
+            border: 1px solid #aaa;
+        }
+        .popup2 > .cmd .button:hover {
+            color: #fff;
+            background-color: #000;
+            border-color: #000;
+        }
+        .hide { display: none; }
+        .game_music{
+          display: none;
+        }
+        .login_music{
+          display: none;
+        }
+        #bgm
+        {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          width: 20px;
+          height: 10px;
+          font-size:90%;
+          display: flex;
+          justify-content: center; /* 가로 가운데 정렬 */
+          align-items: center; /* 세로 가운데 정렬 */
+        }
+
+    </style>
+</head>
+
+
+<!-- AUDIO CLASS -->
+
+<audio class="game_music" controls>
+  <source src="/static/game_music.mp3" type="audio/mpeg">
+</audio>  
+
+<audio class="login_music" controls>
+  <source src="/static/login_music.mp3" type="audio/mpeg">
+</audio>  
+
+<!-- AUDIO CLASS -->
+
+
+
+
+<body class="dimmed">
+    <div class="popup hide" id="popup">
+        <div class="title">nonograms 게임방법!</div>
+        <div class="content">
+            <h1> &#128071;Follow This Rules :) &#128071</h1><br>
+            <p>
+                1. 축의 숫자만큼만 제거할 수 있어요<br><br>
+                2. 숫자와 숫자사이에는 적어도 한칸을 비워야 해요<br><br>
+                3. 정답을 모두 풀면 이미지가 나타나요<br><br>-----------------------------<br><br>
+                TIP <br><br>✔ 힌트보기를 사용할 수 있어요. <br><br>
+                ✔ 힌트가 적힌 부분을 Click하면 해당 줄의 정답을 알려줘요! <br><br>
+                ✔ 하지만 정답을 보게되면 틀린 칸의 수만큼 감점돼요! <br><br>
+                ✔clear한 시간과 성공여부로 게임 순위가 정해져요!
+            </p>
+            <p><marquee width="500" height="100" direction="up" behavior="alternate">Enjoy your game&#128585;</marquee></p>
+        </div>
+        <div class="cmd">
+            <input type="button" name="btnclose" class="button" value="닫기" onclick="popup_toggle()">
+        </div>
+    </div>
+    
+    <body class="dimmed">
+        <div class="popup2 hide" id="popup2">
+            <div class="title">가위바위보 게임방법!</div>
+            <div class="content">
+                <h1> &#128071;Follow This Rules :) &#128071</h1><br>
+                <p>
+                    1. 게임이 시작되면 가위 바위 보 중에 원하는 포지션을 내요<br><br>
+                    2. 내가 이겼는지 졌는지 알려줘요~<br><br>
+                    3. 이기면 3점, 무승부면 1점, 지면 점수는 그대로에요<br><br>
+                    4. 초기화를 누르면 다시 할 수 있어요!<br><br>
+                    5. 높은 점수를 얻었을 때 게임종료를 눌러 저장해줘요!<br><br>
+                    6. 20번 게임 제한이 있어요!!<br><br>-----------------------------<br><br
+                    
+                    TIP <br><br>
+                    ✔ 운이 따라줘야 합니다.<br><br>
+                </p>
+                <p><marquee width="500" height="100" direction="up" behavior="alternate">Enjoy your game&#128585;</marquee></p>
+            </div>
+            <div class="cmd">
+                <input type="button" name="btnclose" class="button" value="닫기" onclick="popup2_toggle()">
+            </div>
+        </div>
+
+    <div class="loader">
+        <span>G</span>
+        <span>A</span>
+        <span>M</span>
+        <span>E</span>
+        <span>_</span>
+        <span>Z</span>
+        <span>1</span>
+        <span>P</span>
+    </div>
+
+    <div class="container">
+        <button type="button" class="btn btn-primary" onclick="location.href='/nonogram'">Nonograms 게임</button>
+        <button type="button" class="btn btn-success" onclick="location.href='/rcpgame'">가위바위보 게임</button>
+        <br>
+        <button type="button" class="btn " onclick="popup_toggle()">👀 How to play nonograms 게임🤔</button> 
+        <button type="button" class="btn "onclick="popup2_toggle()">👀 How to play 가위바위보 게임🤔</button>
+        <br><br>
+        <button type="button" class="btn "onclick="music_play()" id = "bgm">BGM ON</button>
+        
+        <a href="/logout">Logout</a>
+        <br><br>
+        <a href="/review">Review</a>
+   
+    </div>
+
+    <script>
+        const popup = document.querySelector('#popup');
+        function popup_toggle() {
+            popup.classList.toggle('hide');
+        }
+    </script>
+    
+    <script>
+        const popup2 = document.querySelector('#popup2');
+        function popup2_toggle() {
+            popup2.classList.toggle('hide');
+        }
+        function music_play(){
+            const audio = document.querySelector('.login_music');
+            var button = document.getElementById("bgm");
+            if (button.textContent === "BGM ON") {
+              button.textContent = "BGM OFF";
+              audio.play();
+            } else {
+              button.textContent = "BGM ON";
+              audio.pause();
+            }
+        }
+    </script>
+</body>
+
+</html>

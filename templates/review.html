@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>리뷰 남기기</title>
+  <style>
+    .rating {
+      display: inline-block;
+    }
+
+    .rating input {
+      display: none;
+    }
+
+    .rating label {
+      color: #ddd;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    .rating label:before {
+      content: '★';
+    }
+
+    .rating input:checked ~ label,
+    .rating label:hover,
+    .rating label:hover ~ label {
+      color: gold;
+    }
+  </style>
+</head>
+<body>
+  <h1>리뷰 남기기</h1>
+
+  <form id="review-form">
+    <label for="name">이름:</label>
+    <input type="text" id="name" name="name" required><br>
+
+    <div class="rating">
+      <input type="radio" id="star1" name="rating" value="1" required>
+      <label for="star1"></label>
+
+      <input type="radio" id="star2" name="rating" value="2">
+      <label for="star2"></label>
+
+      <input type="radio" id="star3" name="rating" value="3">
+      <label for="star3"></label>
+
+      <input type="radio" id="star4" name="rating" value="4">
+      <label for="star4"></label>
+
+      <input type="radio" id="star5" name="rating" value="5">
+      <label for="star5"></label>
+    </div>
+
+    <br>
+
+    <label for="message">메시지:</label>
+    <textarea id="message" name="message" required></textarea><br>
+
+    <button type="submit">전송</button>
+    <a href="/mainpage">뒤로가기</a>
+  </form>
+
+  <h2>리뷰 리스트</h2>
+  <ul id="review-list"></ul>
+
+  <script>
+    // 리뷰 폼 제출 이벤트 핸들러
+    document.getElementById('review-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // 폼의 기본 동작(페이지 새로고침)을 막음
+
+      // 입력된 값 가져오기
+      const nameInput = document.getElementById('name');
+      const ratingInputs = document.getElementsByName('rating');
+      const messageInput = document.getElementById('message');
+      const name = nameInput.value;
+      let rating;
+
+      // 선택된 별점 값 확인
+      for (let i = 0; i < ratingInputs.length; i++) {
+        if (ratingInputs[i].checked) {
+          rating = ratingInputs[i].value;
+          break;
+        }
+      }
+
+      const message = messageInput.value;
+
+      // 리뷰 아이템 생성
+      const reviewItem = document.createElement('li');
+      reviewItem.innerHTML = `${name}<br> ${generateStars(rating)}<br>${message} `;
+
+      // 리뷰 리스트에 아이템 추가
+      const reviewList = document.getElementById('review-list');
+      reviewList.appendChild(reviewItem);
+
+      // 입력 필드 초기화
+      nameInput.value = '';
+      ratingInputs[0].checked = true;
+      messageInput.value = '';
+    });
+
+  // 별점 버튼 마우스 이벤트 핸들러
+const ratingLabels = document.querySelectorAll('.rating label');
+const ratingInputs = document.getElementsByName('rating');
+
+for (let i = 0; i < ratingLabels.length; i++) {
+  ratingLabels[i].addEventListener('mouseover', function() {
+    // 마우스를 올린 별과 그 이전 별까지 색상을 변경하여 색칠 효과 표시
+    for (let j = 0; j <= i; j++) {
+      ratingLabels[j].style.color = 'gold';
+    }
+
+    // 마우스를 올린 별 다음부터 나머지 별까지 색상을 원래 색으로 변경
+    for (let j = i + 1; j < ratingLabels.length; j++) {
+      ratingLabels[j].style.color = '#ddd';
+    }
+  });
+
+  // 별점 버튼 클릭 이벤트 핸들러
+  ratingLabels[i].addEventListener('click', function() {
+    const selectedRating = i + 1;
+
+    // 선택된 별점 개수에 따라 입력된 별점 표시
+    for (let j = 0; j < ratingInputs.length; j++) {
+      if (j < selectedRating) {
+        ratingInputs[j].checked = true;
+      } else {
+        ratingInputs[j].checked = false;
+      }
+    }
+  });
+}
+
+// 별점 버튼 마우스 이벤트 핸들러
+document.querySelector('.rating').addEventListener('mouseout', function() {
+  // 모든 별 버튼의 색상을 원래 색으로 변경
+  for (let i = 0; i < ratingLabels.length; i++) {
+    ratingLabels[i].style.color = '#ddd';
+  }
+
+  // 선택된 별점 개수에 따라 입력된 별점 표시
+  const selectedRating = document.querySelector('.rating input:checked');
+  if (selectedRating) {
+    const selectedRatingValue = parseInt(selectedRating.value);
+    for (let i = 0; i < selectedRatingValue; i++) {
+      ratingLabels[i].style.color = 'gold';
+    }
+  }
+});
+    // 별점 개수에 따라 별 표시 생성 함수
+    function generateStars(count) {
+      let stars = '';
+      for (let i = 0; i < count; i++) {
+        stars += '★';
+      }
+      return stars;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!-- 회원가입 UI 제공 -->
+<form action="/addmember" method="post" style="max-width: 400px; margin: 0 auto; padding: 20px; background-color: #f1f1f1; border-radius: 5px;">
+    <h1 style="text-align: center;">Sign Up</h1>  
+    <!-- <input type="text" name ="id" required style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+    <br>
+    <input type="text" name ="pw" required style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+  
+    <br>
+    <button type="button" onclick="location.href='/login'" style="width: 100%; padding: 10px; background-color: #f44336; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; text-align: center;">로그인페이지</button> -->
+    <style>
+        body {
+            width: 100%;
+            height: 100vh;
+            background: #2b2b2b;
+            display: grid;
+            place-items: center;
+            font-family: "Poppins", sans-serif;
+            /* font-size: 5rem; */
+            font-weight: 800;s
+            }
+    </style> 
+    <p style="text-align: center;">
+        
+        <label for="username" style="display: block; margin-bottom: 5px;">Username:</label>
+        <input type="text" name ="id"
+            style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+    
+         <img id=    "id_check_sucess" style="display: none;">
+        <label for="pwd" 
+            style="display: block; margin-bottom: 5px;">Password:</label> 
+        <input type="password" name ="pw" required
+            style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+        
+        
+            <button type="button" id="submit"
+            style="width: 100%; padding: 10px; background-color: #4CAF50; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
+            Submmit
+        </button>
+        <button type="button" onclick="location.href='/login'"
+            style="width: 100%; padding: 10px; background-color: #f44336; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; text-align: center;">
+            Go back to login   
+        </button>
+    
+    
+    </p>
+</form>
+
+
+<script>
+    // submit 버튼 객체 가져오기
+    const submit = document.querySelector('#submit');
+    
+    // submit 버튼을 클릭했을 때 동작 정의
+    submit.addEventListener('click', (e) => {
+        // 유저명 입력값 가져오기
+        id = document.querySelector('[name=id]').value;
+        
+        // 비밀번호 입력값 가져오기
+        pw = document.querySelector('[name=pw]').value;
+        
+        // 서버로 요청할 유저명과 비밀번호를 FormData라는 형태로 저장
+        const formData = new FormData();
+        formData.append('id', id);
+        formData.append('pw', pw);
+
+        // 서버로 요청 (요청 주소 : /login)
+        const data = fetch('/addmember', {
+            'method': 'post',
+            'body': formData
+        });
+        // 요청 후 응답을 받고 응답 데이터 처리
+        data.then(res => res.json()).then(res => {
+            alert(res.msg);
+            if(res.code == 1) {
+                location = '/login';
+            }
+        });
+        data.then(res => res.json()).then(res => {
+            alert(res.msg);
+            if(res.code == 2) {
+                location = '/login';
+            }
+        });
+    })
+</script>

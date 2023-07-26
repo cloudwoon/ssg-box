@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Rock Paper Scissors Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #2b2b2b;
+        }
+
+        h1 {
+            color: white;
+        }
+
+        #result {
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+        }
+
+        #score {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: white;
+        }
+
+        #final_score {
+            margin-bottom: 30px;
+            font-size: 20px;
+            color: blue;
+        }
+
+        .button-container {
+            margin: 10px;
+        }
+
+        .button-container button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #45a049;
+        }
+
+        .emoji {
+            font-size: 48px;
+        }
+
+        #dog-image {
+            width: 30%;
+        }
+
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            height: calc(100vh - 10px);
+        }
+
+        #game {
+            width: 50%;
+        }
+
+        #game-over {
+            /* display: none;
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333; */
+            width: 50%;
+        }
+
+        #clear-screen {
+            display: none;
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #clear-screen-button {
+            padding: 10px 20px;
+            background-color: red;
+            color: #fff;
+            border: none;
+            border-radius: 40px;
+            cursor: pointer;
+            margin-top: 10px;
+            text-align: center;
+            width: 20%;
+
+        }
+
+        #past_page {
+            display: none;
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        .view_ranking {
+            display: none;
+            text-align: left;
+        }
+
+        #ranking
+        {
+            position: absolute;
+            top: 7px;
+            right: 10px;
+        }
+        #uname
+        {
+            position: absolute;
+            top: 10px;
+            right: 180px;
+            color: white;
+        }
+        #img1
+        {
+            
+            position: absolute;
+            display:none;
+            top: 280px;
+            left: 300px;
+        }
+        #img2
+        {
+           position: absolute;
+            display:none;
+            top: 280px;
+            left: 300px;
+        } 
+        #img3
+        {
+            position: absolute;
+            display:none;
+            top: 280px;
+            left: 300px;
+        } 
+        #img4
+        {
+            position: absolute;
+            display:none;
+            top: 280px;
+            left: 550px;
+        }
+        #img5
+        {
+            position: absolute;
+            display:none;
+            top: 280px;
+            left: 550px;
+        } 
+        #img6
+        {
+            position: absolute;
+            display:none;
+            top: 280px;
+            left: 550px;
+        } 
+
+        #m_position
+        {
+            position: absolute;
+            top: 200px;
+            left: 300px;
+        } 
+        #c_position
+        {
+            position: absolute;
+            top: 200px;
+            left: 350px;
+        } 
+        #vs
+        {
+            position: absolute;
+            top: 200px;
+            left: 350px;
+        } 
+
+
+
+        #bgm
+        {   
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          width: 90px;
+          height: 20px;
+          font-size:90%;
+          display: flex;
+          justify-content: center; /* 가로 가운데 정렬 */
+          align-items: center; /* 세로 가운데 정렬 */
+        }
+
+        .login_music{
+            display: none;
+        }
+        #LOGOUT
+        {
+            position: absolute;
+            top: 7px;
+            right: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- audio class -->
+
+    <audio class="login_music" controls>
+        <source src="/static/login_music.mp3" type="audio/mpeg">
+      </audio>  
+    <button type="button" class="btn "onclick="music_play()" id = "bgm">BGM ON</button>
+    <h1>컴퓨터를 이겨보자~</h1>
+    <h1 id="m_position"> player&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;computer </h1>
+    <p1 id = uname> PLAYER :  {{session['user_id']}}</p1>
+    <button type="button" id="ranking" class="difficulty-button" onclick="location.href='/rcprank'"
+    style=" background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 5px; text-align: center;">🏆랭킹
+    </button><br><br>
+
+    <button type="button" id="LOGOUT" class="difficulty-button" onclick="location.href='/logout'"
+    style=" background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer; margin-top: 5px; text-align: center;">로그아웃
+    </button>
+
+    <div id="container">
+        <div id="game">
+
+            <div id="result"></div>
+            <div id="score"></div>
+            <div id="final_score"></div>
+            <div class="button-container">
+                <button onclick="play('rock')">✊</button>
+                <button onclick="play('paper')">✋</button>
+                <button onclick="play('scissors')">✌️</button>
+            </div>
+
+            <div id="past_page"></div>
+            <button type="button" onclick="location='/mainpage'" style="padding: 10px 20px; background-color: green; color: #fff; border: none; border-radius: 40px; 
+                cursor: pointer; margin-top: 10px; text-align: center; width:20%;">
+                이전 페이지
+            </button>
+
+            <div id="clear-screen"></div>
+            <button id="clear-screen-button" onclick="resetGame()">
+                점수 초기화
+            </button>
+
+            <div id="game-over"></div>
+            <button class="hidden" type="button" onclick="transtopython()" style="padding: 10px 20px; background-color: gray; color: #fff; border: none; border-radius: 40px; 
+                cursor: pointer; margin-top: 10px; text-align: center; width:100%;">
+                점수제출
+            </button>
+
+        </div>
+
+        <img src="/static/rock.png"  width="600" height="500">
+        <img id="img1" class = "img1" src="/static/img1.png" width="100" height="100">
+        <img id="img2" class = "img2" src="/static/img2.png" width="100" height="100">
+        <img id="img3" class = "img3" src="/static/img3.png" width="100" height="100">
+
+        
+        <img id="img4" class = "img4" src="/static/img1.png" width="100" height="100">
+        <img id="img5" class = "img5" src="/static/img2.png" width="100" height="100">
+        <img id="img6" class = "img6" src="/static/img3.png" width="100" height="100">
+
+        
+
+
+    </div>
+
+    <script>
+        var playerScore = 0;
+        var computerScore = 0;
+        var final_score = 0;
+        var round = 0;
+        var flag = 0;
+        var difficultyContainer = document.querySelector('.hidden');
+        difficultyContainer.style.display = 'none';
+        var uid = '{{uid}}';
+        //주먹
+        function im1(playerChoice){
+            var difficultyContainer1 = document.querySelector('.img1');
+            difficultyContainer1.style.display = 'None';
+            var difficultyContainer2 = document.querySelector('.img2');
+            difficultyContainer2.style.display = 'None';
+            var difficultyContainer3 = document.querySelector('.img3');
+            difficultyContainer3.style.display = 'None';
+
+            if(playerChoice=='rock')
+            {difficultyContainer1.style.display = 'block';}
+            else if(playerChoice=='scissors')
+            {difficultyContainer2.style.display = 'block';}
+            else if(playerChoice=='paper')
+            {difficultyContainer3.style.display = 'block';}
+            
+        }
+        function im2(computerChoice){
+            var difficultyContainer4 = document.querySelector('.img4');
+            difficultyContainer4.style.display = 'None';
+            var difficultyContainer5 = document.querySelector('.img5');
+            difficultyContainer5.style.display = 'None';
+            var difficultyContainer6 = document.querySelector('.img6');
+            difficultyContainer6.style.display = 'None';
+
+            if(computerChoice=='rock')
+            {difficultyContainer4.style.display = 'block';}
+            else if(computerChoice=='scissors')
+            {difficultyContainer5.style.display = 'block';}
+            else if(computerChoice=='paper')
+            {difficultyContainer6.style.display = 'block';}
+            
+        }
+
+        
+        function play(playerChoice) {
+            var choices = ['rock', 'paper', 'scissors'];
+            var computerChoice = choices[Math.floor(Math.random() * choices.length)];
+            im1(playerChoice);
+            im2(computerChoice);
+            round++;
+            var resultText = '승부 ' + round + '번째  : ';
+            if (round <= 20) {
+                if (playerChoice === computerChoice) {
+                    resultText += '무승부다!!';
+                    final_score += 1;
+                } else if (
+                    (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                    (playerChoice === 'paper' && computerChoice === 'rock') ||
+                    (playerChoice === 'scissors' && computerChoice === 'paper')
+                ) {
+                    playerScore++;
+                    resultText += '내가 이김! ';
+                    final_score += 3;
+                } else {
+                    computerScore++;
+                    resultText += '나 졌어ㅜ! ';
+                }
+
+                document.getElementById('result').textContent = resultText;
+                document.getElementById('score').textContent = '내 승리 : ' + playerScore + ' - 상대 승리 : ' + computerScore;
+                var difficultyContainer = document.querySelector('.hidden');
+                difficultyContainer.style.display = 'none';
+            }
+            else if (round > 20) {
+                var finalResult = '';
+                if (playerScore > computerScore) {
+                    finalResult = '이걸 이겼네?.';
+                } else if (playerScore < computerScore) {
+                    finalResult = '크크크. 졌어?';
+                } else {
+                    finalResult = '이게 무승부야?!.';
+                }
+
+                document.getElementById('result').textContent = finalResult;
+                document.getElementById('final_score').textContent = '내 최종 점수 : ' + final_score;
+
+                var difficultyContainer = document.querySelector('.hidden');
+                difficultyContainer.style.display = 'block';
+            }
+        }
+        function resetGame() {
+            playerScore = 0;
+            computerScore = 0;
+            final_score = 0;
+            flag = 0;
+            round = 0;
+            im1('ss');
+            im2('ss');
+            document.getElementById('result').textContent = '';
+            document.getElementById('score').textContent = '';
+            document.getElementById('game-over').textContent = '';
+            document.getElementById('final_score').textContent = '';
+
+            var difficultyContainer = document.querySelector('.hidden');
+            difficultyContainer.style.display = 'none';
+
+            var buttons = document.getElementsByTagName('button');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = false;
+            }
+        }
+
+        function transtopython()
+        {
+            fetch('/rcpscore', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ final_score: final_score, uid:uid  })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result.result)
+                //console.log('데이터가 성공적으로 전송되었습니다.');
+                //document.getElementById("error").textContent = "[점수저장완료.]";
+                })
+                .catch(error => {
+                //console.error('데이터 전송 중 오류가 발생하였습니다.', error);
+                //document.getElementById("error").textContent = "[점수저장실패.]";
+                });
+        }
+        function music_play(){
+            const audio = document.querySelector('.login_music');
+            var button = document.getElementById("bgm");
+            if (button.textContent === "BGM ON") {
+              button.textContent = "BGM OFF";
+              audio.play();
+            } else {
+              button.textContent = "BGM ON";
+              audio.pause();
+            }
+        }
+
+        
+        // function transtopython() {
+        //     if (flag == 0){
+        //     fetch('/rcpscore', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({ final_score: final_score, uid:uid })
+        //     })
+        //         .then(response => response.json())
+        //         .then(result => {
+        //             console.log(result.result)
+        //             document.getElementById("error").textContent = "[점수저장완료.]";
+        //         })
+        //         .catch(error => {
+        //             document.getElementById("error").textContent = "[점수저장실패.]";
+        //         });
+        //         flag = 1;
+        //     }
+        //     // window.location.href = "/main";// 게임 종료시 넘어갈 화면 넣어주기
+        // }
+    </script>
+</body>
+
+</html>
